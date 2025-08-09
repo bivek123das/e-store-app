@@ -1,0 +1,31 @@
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover,
+.card:focus,
+.card:active {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 15px rgba(0,0,0,0.1);
+}
+
+.productImage {
+    transition: transform 0.3s ease;
+}
+
+.card:hover .productImage,
+.card:focus .productImage,
+.card:active .productImage {
+    transform: scale(1.05);
+}
+
+/* Optional: Adjust animation for smaller screens */
+@media (max-width: 768px) {
+    .card {
+        transform: none; /* Prevents layout shift on tap */
+    }
+    .card:active {
+        transform: scale(0.98);
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+    }
+}
