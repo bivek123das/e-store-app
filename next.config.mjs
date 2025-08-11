@@ -5,6 +5,7 @@ const nextConfig = {
       'fakestoreapi.com',
       'i.ibb.co',
       'your-cdn.com',
+      "cdn.dummyjson.com",
     ],
   },
 };

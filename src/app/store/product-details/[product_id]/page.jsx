@@ -1,11 +1,17 @@
 import React from "react";
-import { getProducts } from "../../../../library";
 import Container from "../../../../components/Container";
 import Image from "next/image";
 import Link from "next/link";
+import ProductCartButton from "../../../../components/ProductCartButton";
 
 export default async function ProductDetails({ params }) {
-  const product = await getProducts(params.product_id);
+  // Fetch single product from DummyJSON
+  const res = await fetch(`https://dummyjson.com/products/${params.product_id}`);
+  const productFromDummy = res.ok ? await res.json() : null;
+
+  const product = {
+    ...(productFromDummy || {})
+  };
 
   return (
     <Container>
@@ -14,7 +20,7 @@ export default async function ProductDetails({ params }) {
           {/* Product Image */}
           <div className="w-full md:w-1/2 h-[400px] sm:h-[500px] md:h-[680px] relative">
             <Image
-              src={product.image}
+              src={product.thumbnail}
               alt={product.title}
               fill
               className="object-cover rounded-md"
@@ -32,26 +38,23 @@ export default async function ProductDetails({ params }) {
             <p className="text-lg font-semibold text-gray-900 mb-4">
               Price: ${product.price}
             </p>
-            {product.discountedPrice && (
-              <p className="text-md text-red-500 font-semibold mb-4">
-                Discounted Price: ${product.discountedPrice}
-              </p>
-            )}
             <ul className="text-sm sm:text-base text-gray-700 space-y-2">
               <li>
                 <strong>Category:</strong> {product.category}
               </li>
-              <li>
-                <strong>Type:</strong> {product.type}
-              </li>
-              <li>
-                <strong>Brand:</strong> {product.brand}
-              </li>
+              {product.brand && (
+                <li>
+                  <strong>Brand:</strong> {product.brand}
+                </li>
+              )}
             </ul>
+
+            {/* Cart & Buy Now Buttons */}
+           <ProductCartButton product={product}/>
 
             {/* Go to Store Button */}
             <Link href="/store">
-              <button className="mt-6 w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200">
+              <button className="mt-4 w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200">
                 Go to Store
               </button>
             </Link>
@@ -61,4 +64,8 @@ export default async function ProductDetails({ params }) {
     </Container>
   );
 }
+
+
+
+
 

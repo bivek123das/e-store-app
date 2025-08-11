@@ -31,13 +31,13 @@ export default function CartPage() {
       <div className="bg-white rounded-lg shadow-lg p-4">
         {cart.map((item) => (
           <div
-            key={item._id}
+            key={item._id || item.id}
             className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 py-4 gap-4"
           >
             <div className="flex items-center gap-4">
               <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                 <Image
-                  src={item.image}
+                  src={item.thumbnail || item.image}
                   alt={item.title}
                   fill
                   className="object-cover rounded"
@@ -51,7 +51,7 @@ export default function CartPage() {
               </div>
             </div>
             <button
-              onClick={() => removeFromCart(item._id)}
+              onClick={() => removeFromCart(item.id)}
               className="text-red-500 hover:underline text-sm sm:text-base self-start sm:self-auto"
             >
               Remove

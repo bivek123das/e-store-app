@@ -6,9 +6,16 @@ import { useCartStore } from "../stores/cartStore";
 export default function ProductCartButton({ product }) {
   const addToCart = useCartStore((state) => state.addToCart);
 
+  const handleBuyNow = () => {
+    addToCart(product);
+  };
+
   return (
     <div className="mt-4 flex items-center gap-2 flex-wrap">
-      <button className="bg-pink-500 text-white py-2 px-4 sm:px-5 rounded-lg hover:bg-pink-600 transition duration-300 text-sm sm:text-base w-full sm:w-auto">
+      <button
+        className="bg-pink-500 text-white py-2 px-4 sm:px-5 rounded-lg hover:bg-pink-600 transition duration-300 text-sm sm:text-base w-full sm:w-auto"
+        onClick={handleBuyNow}
+      >
         Buy Now
       </button>
       <button
@@ -21,5 +28,6 @@ export default function ProductCartButton({ product }) {
     </div>
   );
 }
+
 
 

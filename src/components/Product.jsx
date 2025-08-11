@@ -7,12 +7,12 @@ import ProductCartButton from "./ProductCartButton"; // Client component
 export default function ProductBox({ product }) {
   return (
     <div
-      className={`${styles.card} bg-white m-1 p-4 rounded-lg shadow-lg transition-transform hover:scale-105`}
+      className={`${styles.card} bg-white m-1 p-4 rounded-lg shadow-lg transition-transform `}
     >
-      <Link href={`/store/product-details/${product._id}`}>
+      <Link href={`/store/product-details/${product.id}`}>
         <div className="relative w-full h-[250px] sm:h-[280px] md:h-[300px]">
           <Image
-            src={product.image}
+             src={product.thumbnail }
             alt={product.title}
             fill
             className="object-contain rounded-md"
