@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../styles/header.module.css";
 import Container from "./Container";
 import Link from "next/link";
-import NavBar from "./NavBar"; // <-- Import your NavBar
+import NavBar from "./Navbar";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
