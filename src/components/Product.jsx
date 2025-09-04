@@ -24,7 +24,7 @@ export default function ProductBox({ product }) {
           {product.title}
         </h3>
         <p className="text-gray-900 font-semibold mt-2 text-sm sm:text-base">
-          ${product.price}
+        ₹{(product.price * 83).toFixed(0)}
         </p>
 
         {/* Client-rendered Add to Cart button */}

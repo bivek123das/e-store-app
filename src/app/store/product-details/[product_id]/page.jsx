@@ -5,8 +5,11 @@ import Link from "next/link";
 import ProductCartButton from "../../../../components/ProductCartButton";
 
 export default async function ProductDetails({ params }) {
+
+  const { product_id } = await params; // destructure params
+
   // Fetch single product from DummyJSON
-  const res = await fetch(`https://dummyjson.com/products/${params.product_id}`);
+  const res = await fetch(`https://dummyjson.com/products/${product_id}`);
   const productFromDummy = res.ok ? await res.json() : null;
 
   const product = {
@@ -54,7 +57,7 @@ export default async function ProductDetails({ params }) {
 
             {/* Go to Store Button */}
             <Link href="/store">
-              <button className="mt-4 w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200">
+              <button className="mt-4 w-full cursor-pointer sm:w-auto px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200">
                 Go to Store
               </button>
             </Link>
