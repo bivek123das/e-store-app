@@ -3,7 +3,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCartStore } from "../../stores/cartStore";
 export default function PaymentPage() {
-
   const searchParams = useSearchParams();
   const total = searchParams.get("amount");
   const [loading, setLoading] = useState(false);
@@ -11,12 +10,15 @@ export default function PaymentPage() {
   const clearCart = useCartStore((state) => state.clearCart);
 
   // load Razorpay script dynamically
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+
+useEffect(() => {
+  const script = document.createElement("script");
+  script.src = "https://checkout.razorpay.com/v1/checkout.js";
+  script.async = true;
+  script.onload = () => setRazorpayLoaded(true); // ✅ script loaded
+  document.body.appendChild(script);
+}, []);
   const handleRazorpayPayment = async () => {
     try {
       setLoading(true);
@@ -71,6 +73,11 @@ export default function PaymentPage() {
           contact: "9999999999",
         },
         theme: { color: "#F37254" },
+        config: {
+          display: {
+            save: { enabled: false },
+          },
+        },
       };
 
       // 3. Open Razorpay checkout
@@ -92,29 +99,47 @@ export default function PaymentPage() {
 
   return (
     <div className="min-h-[400px] flex items-center justify-center bg-gray-100">
-    {/* Card container */}
-    <div className="bg-white shadow-lg rounded-lg max-w-4xl  mx-auto p-6">
-      <h1 className="text-2xl text-center sm:text-3xl font-bold mb-6">Payment Options</h1>
-      <p className="mb-4 text-center">
-        Total amount to pay: <strong>₹{total}</strong>
-      </p>
-      <div className="flex flex-wrap gap-4">
-        <button
-          disabled={loading}
-          onClick={handleRazorpayPayment}
-          className="w-full sm:w-auto px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-        >
-          {loading ? "Opening Razorpay…" : "Pay with Razorpay"}
-        </button>
-        <button
-          onClick={handleCashOnDelivery}
-          className="w-full sm:w-auto px-5 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-        >
-          Cash on Delivery
-        </button>
+      {/* Card container */}
+      <div className="bg-white shadow-lg rounded-lg max-w-4xl  mx-auto p-6">
+        <h1 className="text-2xl text-center sm:text-3xl font-bold mb-6">
+          Payment Options
+        </h1>
+        <p className="mb-4 text-center">
+          Total amount to pay: <strong>₹{total}</strong>
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <button
+            onClick={() => {
+              const testCard = `
+                  Card Number: 2305 3242 5784 8228
+                  Expiry: 12/34
+                  CVV: 123
+                  OTP: 123456
+                             `;
+              navigator.clipboard.writeText(testCard);
+              alert(
+                "Test card details copied! ✅ Paste them in Razorpay popup."
+              );
+            }}
+            className="w-full sm:w-auto px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Copy Test Card Details
+          </button>
+          <button
+            disabled={!razorpayLoaded || loading}
+            onClick={handleRazorpayPayment}
+            className="w-full sm:w-auto px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+          >
+            {loading ? "Opening Razorpay…" : "Pay with Razorpay"}
+          </button>
+          <button
+            onClick={handleCashOnDelivery}
+            className="w-full sm:w-auto px-5 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          >
+            Cash on Delivery
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  
   );
 }
