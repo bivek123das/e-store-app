@@ -10,13 +10,11 @@ export default function PaymentPage() {
   const clearCart = useCartStore((state) => state.clearCart);
 
   // load Razorpay script dynamically
-  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
 useEffect(() => {
   const script = document.createElement("script");
   script.src = "https://checkout.razorpay.com/v1/checkout.js";
   script.async = true;
-  script.onload = () => setRazorpayLoaded(true); // ✅ script loaded
   document.body.appendChild(script);
 }, []);
   const handleRazorpayPayment = async () => {
@@ -109,24 +107,7 @@ useEffect(() => {
         </p>
         <div className="flex flex-wrap gap-4">
           <button
-            onClick={() => {
-              const testCard = `
-                  Card Number: 2305 3242 5784 8228
-                  Expiry: 12/34
-                  CVV: 123
-                  OTP: 123456
-                             `;
-              navigator.clipboard.writeText(testCard);
-              alert(
-                "Test card details copied! ✅ Paste them in Razorpay popup."
-              );
-            }}
-            className="w-full sm:w-auto px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Copy Test Card Details
-          </button>
-          <button
-            disabled={!razorpayLoaded || loading}
+            disabled={loading}
             onClick={handleRazorpayPayment}
             className="w-full sm:w-auto px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
           >
