@@ -60,7 +60,7 @@
     justify-content: center; /* Center vertically */
     align-items: center;     /* Center horizontally */
     gap: 1.5rem;
-    padding: 1rem; /* Full viewport height */
+    padding: 2rem; /* Full viewport height */
   }
 
   .textSection {
