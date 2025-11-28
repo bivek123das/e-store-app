@@ -21,7 +21,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    afterSignInUrl={"/"}
+    afterSignUpUrl={"/"}>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
@@ -37,7 +39,7 @@ export default function RootLayout({ children }) {
                 <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4">
                   Please sign in to continue
                 </h2>
-                <SignInButton mode="modal">
+                <SignInButton mode="modal" redirectUrl="/">
                   <button className="px-4 py-2 sm:px-5 sm:py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition">
                     Sign In
                   </button>
