@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
 
           <main className="flex-1">
            
-            <SignedIn>{children}</SignedIn>
+            <SignedIn mode="modal" redirectUrl="/" className="cursor-pointer">{children}</SignedIn>
 
             <SignedOut>
               <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
                   Please sign in to continue
                 </h2>
                 <SignInButton mode="modal" redirectUrl="/">
-                  <button className="px-4 py-2 sm:px-5 sm:py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition">
+                  <button className="px-4 py-2 sm:px-5 sm:py-2 cursor-pointer bg-pink-500 text-white rounded hover:bg-pink-600 transition">
                     Sign In
                   </button>
                 </SignInButton>
