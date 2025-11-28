@@ -28,14 +28,14 @@ export default function Header() {
           <div className="flex items-center  gap-4 sm:ml-6">
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="px-3 sm:px-4 py-1.5 sm:py-2 bg-pink-500 text-white rounded text-sm sm:text-base hover:bg-pink-600 transition">
+                <button className="px-3 sm:px-4 cursor-pointer py-1.5 sm:py-2 bg-pink-500 text-white rounded text-sm sm:text-base hover:bg-pink-600 transition">
                   Sign In
                 </button>
               </SignInButton>
             </SignedOut>
 
             <SignedIn>
-              <UserButton afterSignOutUrl={"/"} />
+              <UserButton signInFallbackRedirectUrl="/" />
             </SignedIn>
           </div>
         </div>
