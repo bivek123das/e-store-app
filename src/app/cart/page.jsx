@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "../../stores/cartStore";
 import { useRouter } from "next/navigation";
+import { useAuth, SignIn } from "@clerk/nextjs";
 
 export default function CartPage() {
-
   const router = useRouter();
+  const { isSignedIn } = useAuth();
 
   const cart = useCartStore((state) => state.cart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
@@ -16,6 +17,30 @@ export default function CartPage() {
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
 
   const totalAmount = cart.reduce((sum, item) => sum + (item.price * 83).toFixed(0) * item.quantity, 0);
+
+  // Show sign-in form if not authenticated
+  if (!isSignedIn) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center">
+            Please sign in to view your cart
+          </h2>
+          <SignIn 
+            routing="virtual"
+            redirectUrl="/cart"
+            appearance={{
+              elements: {
+                socialButtonsBlockButton: {
+                  display: 'none',
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (cart.length === 0) {
     return (

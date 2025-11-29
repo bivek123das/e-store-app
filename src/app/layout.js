@@ -21,16 +21,25 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-     signInFallbackRedirectUrl="/"
-  signUpFallbackRedirectUrl="/">
+    <ClerkProvider 
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
+      appearance={{
+        elements: {
+          socialButtonsBlockButton: {
+            display: 'none',
+          },
+        },
+      }}
+    >
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
         >
           <Header />
 
-          <main className="flex-1">
+          <main className="flex-1 flex flex-col min-h-0">
            
             <SignedIn mode="modal" redirectUrl="/" >{children}</SignedIn>
 
@@ -48,10 +57,11 @@ export default function RootLayout({ children }) {
             </SignedOut>
           </main>
 
-          <Footer />
+          <Footer className="mt-auto" />
         </body>
       </html>
     </ClerkProvider>
   );
 };
+
 

@@ -1,11 +1,20 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+// Define protected routes that require authentication
+const isProtectedRoute = createRouteMatcher(['/cart(.*)', '/payment(.*)']);
+
+export default clerkMiddleware(async (auth, req) => {
+  // Protect cart and payment routes
+  if (isProtectedRoute(req)) {
+    await auth.protect();
+  }
+});
 
 export const config = {
   matcher: [
-    "/((?!.*\\..*|_next).*)", // Protect all routes except static files
-    "/",                      // Include root path
-    "/(api|trpc)(.*)",        // Protect API routes
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
   ],
 };

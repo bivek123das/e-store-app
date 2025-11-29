@@ -2,12 +2,15 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCartStore } from "../../stores/cartStore";
+import { useAuth, SignIn } from "@clerk/nextjs";
+
 export default function PaymentPage() {
   const searchParams = useSearchParams();
   const total = searchParams.get("amount");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const clearCart = useCartStore((state) => state.clearCart);
+  const { isSignedIn } = useAuth();
 
   // load Razorpay script dynamically
 
@@ -94,6 +97,30 @@ useEffect(() => {
     clearCart();
     router.push("/", { scroll: true });
   };
+
+  // Show sign-in form if not authenticated
+  if (!isSignedIn) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center">
+            Please sign in to proceed with payment
+          </h2>
+          <SignIn 
+            routing="virtual"
+            redirectUrl={`/payment?amount=${total || ''}`}
+            appearance={{
+              elements: {
+                socialButtonsBlockButton: {
+                  display: 'none',
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[400px] flex items-center justify-center bg-gray-100">

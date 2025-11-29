@@ -7,9 +7,7 @@ import Link from 'next/link';
 export default function HeroSection() {
   return (
     <Container>
-         <section className={`${styles.hero} `}>
-
-         
+         <section className={`${styles.hero} w-[1000px]`}>
 
             <div className={`${styles.textSection} text-gray-700`}>
               <h1>One stop solution <span className='text-pink-500'>E-Store</span></h1>
@@ -22,6 +20,6 @@ export default function HeroSection() {
                <Slider/>
          </section>
          
-    </Container>
+         </Container>
   )
 }
