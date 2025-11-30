@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utlis/firebase";
 import { useUserStore } from "../stores/userStore";
 import Header from "./Header";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 
 export default function ClientLayoutWrapper({ children }) {
   const setUser = useUserStore((s) => s.setUser);
@@ -43,7 +43,7 @@ export default function ClientLayoutWrapper({ children }) {
       <main className="flex-1 flex flex-col min-h-0 pt-20">
         {children}
       </main>
-      <Footer className="mt-auto" />
+      {/* <Footer className="mt-auto" /> */}
     </>
   );
 }
