@@ -4,44 +4,42 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "../stores/cartStore";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function ProductCartButton({ product }) {
+export default function ProductCartButton({ product, showMessage = true }) {
   const router = useRouter();
   const addToCart = useCartStore((state) => state.addToCart);
-  const [showMessage, setShowMessage] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleBuyNow = () => {
     addToCart(product);
-    setShowMessage(true);
-    // Auto-hide message after 5 seconds
-    setTimeout(() => {
-      setShowMessage(false);
-    }, 5000);
+    if (showMessage) {
+      setShowSuccessMessage(true);
+      // Auto-hide message after 5 seconds
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 5000);
+    }
   };
 
   const handleAddToCart = () => {
     addToCart(product);
-    setShowMessage(true);
-    // Auto-hide message after 5 seconds
-    setTimeout(() => {
-      setShowMessage(false);
-    }, 5000);
+    // Don't show message for cart icon button
   };
 
   return (
     <div className="mt-4">
       {/* Success Message */}
-      {showMessage && (
+      {showSuccessMessage && showMessage && (
         <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center justify-between">
           <span className="text-sm sm:text-base">
-            ✅ Your item added to cart! 
+            ✅ Added to cart! 
             <Link href="/cart" className="ml-2 font-semibold underline hover:text-green-800">
-              Go to Cart Page
+              View Cart
             </Link>
           </span>
           <button
-            onClick={() => setShowMessage(false)}
+            onClick={() => setShowSuccessMessage(false)}
             className="ml-2 text-green-700 hover:text-green-900 font-bold"
           >
             ×

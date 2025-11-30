@@ -2,7 +2,6 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCartStore } from "../../stores/cartStore";
-import { useAuth, SignIn } from "@clerk/nextjs";
 
 export default function PaymentPage() {
   const searchParams = useSearchParams();
@@ -10,7 +9,6 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const clearCart = useCartStore((state) => state.clearCart);
-  const { isSignedIn } = useAuth();
 
   // load Razorpay script dynamically
 
@@ -68,9 +66,24 @@ useEffect(() => {
           }
           // You can also call your backend to verify the signature here.
         },
+        config: {
+          display: {
+            hide: ["card"], // ❌ Hide card only
+          },
+        },
+
+        // ⭐ Allow all other methods
+        method: {
+          card: false,        // ❌ hide cards
+          upi: true,          // ✔ show UPI
+          wallet: true,       // ✔ show Wallets
+          netbanking: true,   // ✔ show Netbanking
+          emi: true,          // ✔ show EMI
+          paylater: true      // ✔ pay later
+        },
+
         prefill: {
-          name: "John Doe",
-          email: "john@example.com",
+          email: "test@example.com",
           contact: "9999999999",
         },
         theme: { color: "#F37254" },
@@ -98,30 +111,6 @@ useEffect(() => {
     router.push("/", { scroll: true });
   };
 
-  // Show sign-in form if not authenticated
-  if (!isSignedIn) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-4 sm:p-6">
-        <div className="w-full max-w-md">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center">
-            Please sign in to proceed with payment
-          </h2>
-          <SignIn 
-            routing="virtual"
-            redirectUrl={`/payment?amount=${total || ''}`}
-            appearance={{
-              elements: {
-                socialButtonsBlockButton: {
-                  display: 'none',
-                },
-              },
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-[400px] flex items-center justify-center bg-gray-100">
       {/* Card container */}
@@ -136,13 +125,13 @@ useEffect(() => {
           <button
             disabled={loading}
             onClick={handleRazorpayPayment}
-            className="w-full sm:w-auto px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+            className="w-full sm:w-auto px-5 py-2 bg-green-500 cursor-pointer text-white rounded hover:bg-green-600 disabled:opacity-50"
           >
             {loading ? "Opening Razorpay…" : "Pay with Razorpay"}
           </button>
           <button
             onClick={handleCashOnDelivery}
-            className="w-full sm:w-auto px-5 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+            className="w-full sm:w-auto px-5 py-2 bg-yellow-500 cursor-pointer text-white rounded hover:bg-yellow-600"
           >
             Cash on Delivery
           </button>
@@ -151,3 +140,4 @@ useEffect(() => {
     </div>
   );
 }
+

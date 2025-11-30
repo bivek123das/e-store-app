@@ -28,7 +28,7 @@ export default function ProductBox({ product }) {
         </p>
 
         {/* Client-rendered Add to Cart button */}
-        <ProductCartButton product={product} />
+        <ProductCartButton product={product} showMessage={false} />
       </div>
     </div>
   );
