@@ -8,6 +8,8 @@ import { useUserStore } from "../stores/userStore";
 import Header from "./Header";
 import Footer from "./Footer";
 
+import { Toaster } from "react-hot-toast";  // ⬅️ ADD THIS
+
 export default function ClientLayoutWrapper({ children }) {
   const setUser = useUserStore((s) => s.setUser);
   const user = useUserStore((s) => s.user);
@@ -24,7 +26,6 @@ export default function ClientLayoutWrapper({ children }) {
         });
       } else {
         setUser(null);
-        // redirect to login if user is not authenticated
         router.push("/login");
       }
     });
@@ -32,17 +33,22 @@ export default function ClientLayoutWrapper({ children }) {
     return () => unsub();
   }, [setUser, router]);
 
-  // Optional: prevent flicker before auth state resolves
+  // Prevent flicker before auth loads
   if (user === undefined) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
+      {/* 🔥 Global Toast System */}
+      <Toaster position="top-right" reverseOrder={false} />
+
       <Header />
+
       <main className="flex-1 flex flex-col min-h-0 pt-20">
         {children}
       </main>
+
       <Footer className="mt-auto" />
     </>
   );
