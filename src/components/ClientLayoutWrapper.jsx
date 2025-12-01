@@ -41,7 +41,13 @@ export default function ClientLayoutWrapper({ children }) {
   return (
     <>
       {/* 🔥 Global Toast System */}
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster  position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            marginTop: "70px", // add top gap to avoid overlapping header icons
+          },
+        }} />
 
       <Header />
 
